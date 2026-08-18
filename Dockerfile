@@ -26,11 +26,8 @@ ENV DJANGO_SETTINGS_MODULE=magasin_app.settings
 # Change to backend directory
 WORKDIR /app/backend
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
-
 # Expose port
 EXPOSE 8000
 
-# Run migrations and start server
-CMD python manage.py migrate --noinput && gunicorn magasin_app.wsgi:application --bind 0.0.0.0:$PORT
+# Run migrations, collect static and start server (all at runtime when env vars are available)
+CMD python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn magasin_app.wsgi:application --bind 0.0.0.0:$PORT
