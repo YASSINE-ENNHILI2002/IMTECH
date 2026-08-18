@@ -13,9 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from decouple import config
 import os
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+import dj_database_url
 
 
 # Quick-start development settings - unsuitable for production
@@ -89,16 +87,27 @@ WSGI_APPLICATION = 'magasin_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME', default='jimi_db'),
-        'USER': config('DB_USER', default='postgres'),
-        'PASSWORD': config('DB_PASSWORD', default='yassine'),
-        'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default='5432'),
+# Railway provides DATABASE_URL automatically
+if os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=config('DATABASE_URL', default='sqlite:///db.sqlite3'),
+            conn_max_age=600,
+            conn_health_checks=True
+        )
     }
-}
+else:
+    # Local development with PostgreSQL
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('DB_NAME', default='jimi_db'),
+            'USER': config('DB_USER', default='postgres'),
+            'PASSWORD': config('DB_PASSWORD', default='YASSINE'),
+            'HOST': config('DB_HOST', default='localhost'),
+            'PORT': config('DB_PORT', default='5432'),
+        }
+    }
 
 
 # Password validation
