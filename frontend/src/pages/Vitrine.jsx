@@ -9,260 +9,243 @@ function Vitrine() {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedProduct, setSelectedProduct] = useState(null)
-  const [showContactModal, setShowContactModal] = useState(false)
 
-  useEffect(() => {
-    loadProducts()
-  }, [])
+  useEffect(() => { loadProducts() }, [])
 
   const loadProducts = async () => {
     try {
-      const response = await productsAPI.getPublicCatalog()
-      setProducts(response.data)
-      
-      // Extraire les catégories uniques
-      const uniqueCategories = [...new Set(response.data.map(p => p.categorie_nom).filter(Boolean))]
-      setCategories(uniqueCategories)
-    } catch (error) {
-      console.error('Error loading products:', error)
-    } finally {
-      setLoading(false)
-    }
+      const r = await productsAPI.getPublicCatalog()
+      setProducts(r.data)
+      const cats = [...new Set(r.data.map(p => p.categorie_nom).filter(Boolean))]
+      setCategories(cats)
+    } catch (e) { console.error(e) } finally { setLoading(false) }
   }
 
-  const filteredProducts = products.filter(product => {
-    const matchesSearch = product.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.marque?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.modele?.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCategory = !selectedCategory || product.categorie_nom === selectedCategory
-    return matchesSearch && matchesCategory
+  const filtered = products.filter(p => {
+    const q = searchTerm.toLowerCase()
+    return (
+      (!selectedCategory || p.categorie_nom === selectedCategory) &&
+      (p.nom.toLowerCase().includes(q) || (p.marque || '').toLowerCase().includes(q) || (p.modele || '').toLowerCase().includes(q))
+    )
   })
 
-  const handleContactClick = (product) => {
-    setSelectedProduct(product)
-    setShowContactModal(true)
+  const handleWhatsApp = (p) => {
+    const phone = '212600000000'
+    const msg = `Bonjour ! Je suis intéressé(e) par :\n\n📱 *${p.nom}*\n💰 Prix : ${parseFloat(p.prix_vente).toFixed(2)} €\n\nPouvez-vous me donner plus d'informations ? Merci !`
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank')
   }
-
-  const handleWhatsAppOrder = (product) => {
-    const phoneNumber = "33612345678" // À remplacer par votre numéro WhatsApp international (ex: 33612345678 pour France)
-    const message = `Bonjour! Je souhaite commander le produit suivant:\n\n📱 *${product.nom}*\n💰 Prix: ${parseFloat(product.prix_vente).toFixed(2)}€\n📦 Stock disponible: ${product.stock}\n📍 Magasin: Magasin Mobile Paris\n\nMerci de me confirmer la disponibilité et les modalités de commande.`
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
-    window.open(whatsappUrl, '_blank')
-  }
-
-  if (loading) return <div className="loading-vitrine">Chargement...</div>
 
   return (
     <div className="vitrine-page">
-      {/* Header */}
-      <header className="vitrine-header">
-        <div className="header-content">
-          <h1>📱 Magasin Mobile</h1>
-          <p>Vente de téléphones, accessoires et services de réparation</p>
-          <div className="header-contact">
-            <span>📍 123 Rue du Commerce, Paris</span>
-            <span>📞 01 23 45 67 89</span>
-            <span>📱 WhatsApp: +33 6 12 34 56 78</span>
-            <span>✉️ contact@magasin-mobile.fr</span>
+      {/* ===== HERO ===== */}
+      <header className="vitrine-hero">
+        <div className="hero-bg"></div>
+        <div className="hero-content">
+          <div className="hero-badge">
+            <i className="fa-solid fa-mobile-screen-button"></i> IMTECH
+          </div>
+          <h1 className="hero-title">Spécialiste en Téléphonie</h1>
+          <p className="hero-subtitle">Accessoires, smartphones reconditionnés & réparations toutes marques</p>
+          <div className="hero-stats">
+            <div className="hero-stat"><span>{products.length}</span><small>Produits</small></div>
+            <div className="hero-stat-divider"></div>
+            <div className="hero-stat"><span>{categories.length}</span><small>Catégories</small></div>
+            <div className="hero-stat-divider"></div>
+            <div className="hero-stat"><i className="fa-brands fa-whatsapp" style={{color:'#25d366'}}></i><small>WhatsApp</small></div>
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-content">
-          <h2>Découvrez nos produits</h2>
-          <p>Téléphones neufs et d'occasion, accessoires, et services de réparation professionnelle</p>
-          <div className="hero-stats">
-            <div className="stat">
-              <span className="stat-number">{products.length}</span>
-              <span className="stat-label">Produits disponibles</span>
+      {/* ===== SEARCH & FILTER ===== */}
+      <section className="vitrine-controls">
+        <div className="vitrine-container">
+          <div className="controls-inner">
+            <div className="search-wrapper" style={{flex:1, maxWidth:420}}>
+              <i className="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                className="form-control search-input vitrine-search"
+                placeholder="Rechercher un produit, marque, modèle..."
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+              />
             </div>
-            <div className="stat">
-              <span className="stat-number">24/7</span>
-              <span className="stat-label">Service client</span>
+            <div className="cats-scroll">
+              <button
+                className={`cat-chip ${!selectedCategory ? 'active' : ''}`}
+                onClick={() => setSelectedCategory('')}
+              >
+                <i className="fa-solid fa-border-all"></i> Tout
+              </button>
+              {categories.map(cat => (
+                <button
+                  key={cat}
+                  className={`cat-chip ${selectedCategory === cat ? 'active' : ''}`}
+                  onClick={() => setSelectedCategory(selectedCategory === cat ? '' : cat)}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
-            <div className="stat">
-              <span className="stat-number">12 mois</span>
-              <span className="stat-label">Garantie</span>
-            </div>
+            <span className="results-count">{filtered.length} produit{filtered.length !== 1 ? 's' : ''}</span>
           </div>
         </div>
       </section>
 
-      {/* Filters */}
-      <section className="filters-section">
-        <div className="search-bar">
-          <input
-            type="text"
-            placeholder="Rechercher un produit, marque, modèle..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
-        </div>
-        <div className="category-filters">
-          <button 
-            className={`category-btn ${!selectedCategory ? 'active' : ''}`}
-            onClick={() => setSelectedCategory('')}
-          >
-            Tous les produits
-          </button>
-          {categories.map(category => (
-            <button
-              key={category}
-              className={`category-btn ${selectedCategory === category ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </button>
-          ))}
+      {/* ===== PRODUCTS GRID ===== */}
+      <section className="vitrine-products">
+        <div className="vitrine-container">
+          {loading ? (
+            <div className="loading-state" style={{padding:'80px 0'}}>
+              <div className="spinner"></div>
+              <span>Chargement du catalogue...</span>
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="empty-state" style={{padding:'80px 0'}}>
+              <i className="fa-solid fa-box-open"></i>
+              <h4>Aucun produit trouvé</h4>
+              <p>Essayez de modifier votre recherche ou sélectionnez une autre catégorie</p>
+            </div>
+          ) : (
+            <div className="products-grid">
+              {filtered.map(p => (
+                <div key={p.id} className={`product-card ${p.stock <= 0 ? 'out-of-stock' : ''}`}>
+                  <div className="product-image-wrap">
+                    <div className="product-image-placeholder">
+                      <i className="fa-solid fa-mobile-screen-button"></i>
+                    </div>
+                    {p.stock <= 0 && <div className="stock-overlay">Rupture de stock</div>}
+                    {p.stock > 0 && p.stock <= 3 && (
+                      <div className="stock-badge-low">
+                        <i className="fa-solid fa-fire"></i> Dernières pièces
+                      </div>
+                    )}
+                  </div>
+                  <div className="product-info">
+                    {p.categorie_nom && (
+                      <span className="product-category">{p.categorie_nom}</span>
+                    )}
+                    <h3 className="product-name">{p.nom}</h3>
+                    {(p.marque || p.modele) && (
+                      <p className="product-model">{[p.marque, p.modele].filter(Boolean).join(' · ')}</p>
+                    )}
+                    {p.description && (
+                      <p className="product-desc">{p.description.slice(0, 80)}{p.description.length > 80 ? '...' : ''}</p>
+                    )}
+                    <div className="product-footer">
+                      <div className="product-price">
+                        <span className="price-main">{parseFloat(p.prix_vente).toFixed(2)} €</span>
+                        {p.garantie_mois && <span className="price-garantie"><i className="fa-solid fa-shield-halved"></i> {p.garantie_mois} mois</span>}
+                      </div>
+                      <div className="product-actions-row">
+                        <button
+                          className="btn-detail"
+                          onClick={() => setSelectedProduct(p)}
+                          disabled={p.stock <= 0}
+                        >
+                          <i className="fa-solid fa-eye"></i>
+                        </button>
+                        <button
+                          className="btn-whatsapp"
+                          onClick={() => handleWhatsApp(p)}
+                          disabled={p.stock <= 0}
+                        >
+                          <i className="fa-brands fa-whatsapp"></i>
+                          {p.stock <= 0 ? 'Indisponible' : 'Commander'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Products Grid */}
-      <section className="products-section">
-        <h2>Nos Produits</h2>
-        {filteredProducts.length === 0 ? (
-          <div className="no-products">
-            <p>Aucun produit ne correspond à votre recherche.</p>
-          </div>
-        ) : (
-          <div className="products-grid">
-            {filteredProducts.map(product => (
-              <div key={product.id} className="product-card">
-                <div className="product-image">
-                  {product.image_url ? (
-                    <img 
-                      src={product.image_url} 
-                      alt={product.nom}
-                      className="product-img"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextElementSibling.style.display = 'flex';
-                      }}
-                    />
-                  ) : null}
-                  <div className="placeholder-image" style={{display: product.image_url ? 'none' : 'flex'}}>
-                    {product.type_stock === 'UNIQUE_IMEI' ? '📱' : '📦'}
-                  </div>
-                  {product.est_stock_faible && (
-                    <span className="stock-badge warning">Stock limité</span>
-                  )}
-                </div>
-                <div className="product-info">
-                  <h3>{product.nom}</h3>
-                  <p className="product-category">{product.categorie_nom || 'Divers'}</p>
-                  {product.marque && (
-                    <p className="product-brand">{product.marque} {product.modele}</p>
-                  )}
-                  {product.capacite && (
-                    <p className="product-capacity">{product.capacite}</p>
-                  )}
-                  <div className="product-price">
-                    <span className="price">{parseFloat(product.prix_vente).toFixed(2)}€</span>
-                    <span className="stock">En stock: {product.stock}</span>
-                  </div>
-                  <div className="product-actions">
-                    <button 
-                      className="btn btn-whatsapp"
-                      onClick={() => handleWhatsAppOrder(product)}
-                    >
-                      📱 Commander via WhatsApp
-                    </button>
-                    <button 
-                      className="btn btn-contact"
-                      onClick={() => handleContactClick(product)}
-                    >
-                      📞 Nous contacter
-                    </button>
-                  </div>
-                </div>
+      {/* ===== CONTACT BAR ===== */}
+      <section className="vitrine-contact">
+        <div className="vitrine-container">
+          <div className="contact-bar">
+            <div className="contact-info">
+              <i className="fa-solid fa-location-dot"></i>
+              <div>
+                <div className="contact-label">Notre adresse</div>
+                <div className="contact-value">Votre adresse magasin</div>
               </div>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* Services Section */}
-      <section className="services-section">
-        <h2>Nos Services</h2>
-        <div className="services-grid">
-          <div className="service-card">
-            <div className="service-icon">🔧</div>
-            <h3>Réparations</h3>
-            <p>Réparation professionnelle de tous types de téléphones et tablettes</p>
-          </div>
-          <div className="service-card">
-            <div className="service-icon">🔄</div>
-            <h3>Rachat Occasion</h3>
-            <p>Nous rachetons votre ancien téléphone au meilleur prix</p>
-          </div>
-          <div className="service-card">
-            <div className="service-icon">📱</div>
-            <h3>Téléphones Neufs</h3>
-            <p>Large gamme de téléphones neufs avec garantie constructeur</p>
-          </div>
-          <div className="service-card">
-            <div className="service-icon">🎧</div>
-            <h3>Accessoires</h3>
-            <p>Coques, protections, chargeurs et accessoires originaux</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Modal */}
-      {showContactModal && selectedProduct && (
-        <div className="modal-overlay" onClick={() => setShowContactModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3>Nous contacter</h3>
-              <button className="close-btn" onClick={() => setShowContactModal(false)}>×</button>
-            </div>
-            <div className="product-summary">
-              <h4>Produit: {selectedProduct.nom}</h4>
-              <p>Prix: {parseFloat(selectedProduct.prix_vente).toFixed(2)}€</p>
-              <p>Stock: {selectedProduct.stock} unité(s)</p>
             </div>
             <div className="contact-info">
-              <h4>Informations de contact</h4>
-              <p>📍 Adresse: 123 Rue du Commerce, 75001 Paris</p>
-              <p>📞 Téléphone: 01 23 45 67 89</p>
-              <p>✉️ Email: contact@magasin-mobile.fr</p>
-              <p>🕐 Horaires: Lundi-Samedi 9h-19h</p>
+              <i className="fa-solid fa-clock"></i>
+              <div>
+                <div className="contact-label">Horaires</div>
+                <div className="contact-value">Lun – Sam : 9h – 19h</div>
+              </div>
             </div>
-            <div className="modal-actions">
-              <button className="btn btn-primary" onClick={() => setShowContactModal(false)}>
-                Fermer
+            <div className="contact-info">
+              <i className="fa-solid fa-phone"></i>
+              <div>
+                <div className="contact-label">Téléphone</div>
+                <div className="contact-value">+212 6 00 00 00 00</div>
+              </div>
+            </div>
+            <a href="https://wa.me/212600000000" target="_blank" rel="noreferrer" className="btn-wa-main">
+              <i className="fa-brands fa-whatsapp"></i> Nous contacter sur WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== PRODUCT DETAIL MODAL ===== */}
+      {selectedProduct && (
+        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setSelectedProduct(null)}>
+          <div className="modal" style={{maxWidth:520}}>
+            <div className="modal-header">
+              <h3><i className="fa-solid fa-mobile-screen-button"></i> {selectedProduct.nom}</h3>
+              <button className="modal-close" onClick={() => setSelectedProduct(null)}><i className="fa-solid fa-xmark"></i></button>
+            </div>
+            <div className="modal-body">
+              <div className="detail-image">
+                <i className="fa-solid fa-mobile-screen-button"></i>
+              </div>
+              {selectedProduct.categorie_nom && <span className="badge badge-purple">{selectedProduct.categorie_nom}</span>}
+              {selectedProduct.marque && (
+                <div className="detail-row"><span>Marque</span><strong>{selectedProduct.marque}</strong></div>
+              )}
+              {selectedProduct.modele && (
+                <div className="detail-row"><span>Modèle</span><strong>{selectedProduct.modele}</strong></div>
+              )}
+              {selectedProduct.capacite && (
+                <div className="detail-row"><span>Capacité</span><strong>{selectedProduct.capacite}</strong></div>
+              )}
+              {selectedProduct.couleur && (
+                <div className="detail-row"><span>Couleur</span><strong>{selectedProduct.couleur}</strong></div>
+              )}
+              <div className="detail-row">
+                <span>Disponibilité</span>
+                <strong style={{color: selectedProduct.stock > 0 ? 'var(--accent-green)' : 'var(--accent-red)'}}>
+                  {selectedProduct.stock > 0 ? `${selectedProduct.stock} en stock` : 'Rupture de stock'}
+                </strong>
+              </div>
+              {selectedProduct.garantie_mois && (
+                <div className="detail-row"><span>Garantie</span><strong>{selectedProduct.garantie_mois} mois</strong></div>
+              )}
+              {selectedProduct.description && (
+                <div className="form-group">
+                  <label className="form-label">Description</label>
+                  <p style={{color:'var(--text-secondary)', fontSize:'0.875rem', lineHeight:1.6}}>{selectedProduct.description}</p>
+                </div>
+              )}
+              <div className="detail-price">{parseFloat(selectedProduct.prix_vente).toFixed(2)} €</div>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-secondary" onClick={() => setSelectedProduct(null)}>Fermer</button>
+              <button className="btn-wa-main" style={{padding:'10px 20px'}} onClick={() => handleWhatsApp(selectedProduct)}>
+                <i className="fa-brands fa-whatsapp"></i> Commander via WhatsApp
               </button>
             </div>
           </div>
         </div>
       )}
-
-      {/* Footer */}
-      <footer className="vitrine-footer">
-        <div className="footer-content">
-          <div className="footer-section">
-            <h4>Magasin Mobile</h4>
-            <p>Votre partenaire pour tous vos besoins mobiles</p>
-          </div>
-          <div className="footer-section">
-            <h4>Contact</h4>
-            <p>📍 123 Rue du Commerce, Paris</p>
-            <p>📞 01 23 45 67 89</p>
-            <p>✉️ contact@magasin-mobile.fr</p>
-          </div>
-          <div className="footer-section">
-            <h4>Horaires</h4>
-            <p>Lundi - Samedi: 9h - 19h</p>
-            <p>Dimanche: Fermé</p>
-          </div>
-        </div>
-        <div className="footer-bottom">
-          <p>© 2024 Magasin Mobile. Tous droits réservés.</p>
-        </div>
-      </footer>
     </div>
   )
 }

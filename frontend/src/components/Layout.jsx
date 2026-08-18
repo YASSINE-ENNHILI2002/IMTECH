@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, Outlet } from 'react-router-dom'
 import './Layout.css'
 
 const navItems = [
@@ -11,7 +11,7 @@ const navItems = [
   { path: '/vitrine',    icon: 'fa-solid fa-store',             label: 'Vitrine Publique' },
 ]
 
-function Layout({ children }) {
+function Layout() {
   const location = useLocation()
 
   return (
@@ -63,7 +63,7 @@ function Layout({ children }) {
       {/* ===== MAIN CONTENT ===== */}
       <main className="main-wrapper">
         <div className="main-content">
-          {children}
+          <Outlet />
         </div>
       </main>
     </div>
