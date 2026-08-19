@@ -7,6 +7,7 @@ import Reparations from './pages/Reparations'
 import Caisse from './pages/Caisse'
 import RachatOccasion from './pages/RachatOccasion'
 import Vitrine from './pages/Vitrine'
+import AdminLogin from './pages/AdminLogin'
 import './components/Layout.css'
 
 function App() {
@@ -16,7 +17,10 @@ function App() {
         {/* Route publique vitrine */}
         <Route path="/vitrine" element={<Vitrine />} />
         
-        {/* Routes admin avec layout */}
+        {/* Admin login */}
+        <Route path="/admin" element={<AdminLogin />} />
+        
+        {/* Routes admin avec layout (protégées via le Layout lui-même) */}
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="produits" element={<Produits />} />
@@ -31,3 +35,4 @@ function App() {
 }
 
 export default App
+

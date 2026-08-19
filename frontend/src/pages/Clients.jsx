@@ -127,7 +127,7 @@ function Clients() {
             <form onSubmit={handleSubmit}>
               <div className="form-grid">
                 <div className="form-group">
-                  <label>Nom*</label>
+                  <label>Nom</label>
                   <input
                     type="text"
                     required
@@ -136,7 +136,7 @@ function Clients() {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Prénom*</label>
+                  <label>Prénom</label>
                   <input
                     type="text"
                     required
@@ -145,7 +145,7 @@ function Clients() {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Téléphone*</label>
+                  <label>Téléphone</label>
                   <input
                     type="text"
                     required
@@ -154,7 +154,7 @@ function Clients() {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Type de pièce*</label>
+                  <label>Type de pièce</label>
                   <select
                     required
                     value={formData.type_piece}
@@ -166,7 +166,7 @@ function Clients() {
                   </select>
                 </div>
                 <div className="form-group">
-                  <label>Numéro de pièce*</label>
+                  <label>Numéro de pièce</label>
                   <input
                     type="text"
                     required

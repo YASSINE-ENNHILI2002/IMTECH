@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { productsAPI, transactionsAPI, clientsAPI } from '../services/api'
 import './Caisse.css'
 
@@ -12,6 +12,7 @@ function Caisse() {
   const [showPaymentModal, setShowPaymentModal] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState('ESPECES')
   const [loading, setLoading] = useState(true)
+  const searchInputRef = useRef(null)
 
   useEffect(() => {
     loadData()
@@ -68,17 +69,41 @@ function Caisse() {
 
   const handleBarcodeScan = async (e) => {
     if (e.key === 'Enter' && searchTerm) {
+      e.preventDefault()
+      
+      // 1. Search locally for instant response
+      const matchedProd = products.find(p => p.code_barres === searchTerm || p.code_barres?.toLowerCase() === searchTerm.toLowerCase())
+      if (matchedProd) {
+        if (matchedProd.stock > 0) {
+          addToCart(matchedProd)
+          setSearchTerm('')
+        } else {
+          alert(`Le produit "${matchedProd.nom}" est en rupture de stock.`)
+          setSearchTerm('')
+        }
+        if (searchInputRef.current) searchInputRef.current.focus()
+        return
+      }
+
+      // 2. Fallback to API check if not in preloaded list
       try {
         const response = await productsAPI.getByBarcode(searchTerm)
         if (response.data) {
-          addToCart(response.data)
-          setSearchTerm('')
+          if (response.data.stock > 0) {
+            addToCart(response.data)
+            setSearchTerm('')
+          } else {
+            alert(`Le produit "${response.data.nom}" est en rupture de stock.`)
+            setSearchTerm('')
+          }
         } else {
           alert('Produit non trouvé')
         }
       } catch (error) {
         console.error('Error scanning barcode:', error)
-        alert('Erreur lors du scan du code-barres')
+        alert('Produit non trouvé ou erreur lors du scan.')
+      } finally {
+        if (searchInputRef.current) searchInputRef.current.focus()
       }
     }
   }
@@ -139,6 +164,7 @@ function Caisse() {
       }
       
       loadData()
+      if (searchInputRef.current) searchInputRef.current.focus()
     } catch (error) {
       console.error('Error processing payment:', error)
       alert('Erreur lors du traitement du paiement')
@@ -155,6 +181,7 @@ function Caisse() {
           
           <div className="search-bar">
             <input
+              ref={searchInputRef}
               type="text"
               placeholder="Scanner code-barres ou rechercher produit..."
               value={searchTerm}

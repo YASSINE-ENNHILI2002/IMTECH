@@ -1,5 +1,7 @@
-import { Link, useLocation, Outlet } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useLocation, Outlet, Navigate } from 'react-router-dom'
 import './Layout.css'
+import Logo from '../components/Logo'
 
 const navItems = [
   { path: '/',           icon: 'fa-solid fa-chart-line',        label: 'Tableau de bord' },
@@ -13,15 +15,45 @@ const navItems = [
 
 function Layout() {
   const location = useLocation()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const isAuthenticated = localStorage.getItem('adminAuth') === 'true'
+
+  if (!isAuthenticated) {
+    return <Navigate to="/admin" replace />
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminAuth')
+    window.location.href = '/admin'
+  }
 
   return (
     <div className="app-layout">
+      {/* ===== MOBILE HEADER ===== */}
+      <header className="mobile-header">
+        <button 
+          className="mobile-toggle" 
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          aria-label="Toggle Navigation"
+        >
+          <i className={sidebarOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'}></i>
+        </button>
+        <div className="mobile-brand">
+          <Logo width={28} height={28} />
+          <span className="mobile-brand-name">IMTECH</span>
+        </div>
+        <button className="mobile-logout" onClick={handleLogout} title="Déconnexion">
+          <i className="fa-solid fa-power-off"></i>
+        </button>
+      </header>
+
+      {/* ===== SIDEBAR OVERLAY ===== */}
+      {sidebarOpen && <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)}></div>}
+
       {/* ===== SIDEBAR ===== */}
-      <aside className="sidebar">
+      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-brand">
-          <div className="brand-icon">
-            <i className="fa-solid fa-mobile-screen-button"></i>
-          </div>
+          <Logo width={36} height={36} />
           <div>
             <div className="brand-name">IMTECH</div>
             <div className="brand-sub">Gestion Magasin</div>
@@ -38,6 +70,7 @@ function Layout() {
                 key={item.path}
                 to={item.path}
                 className={`nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setSidebarOpen(false)}
               >
                 <i className={`${item.icon} nav-icon`}></i>
                 <span className="nav-label">{item.label}</span>
@@ -48,14 +81,19 @@ function Layout() {
         </nav>
 
         <div className="sidebar-footer">
-          <div className="sidebar-user">
-            <div className="user-avatar">
-              <i className="fa-solid fa-user"></i>
+          <div className="sidebar-user-wrapper">
+            <div className="sidebar-user">
+              <div className="user-avatar">
+                <i className="fa-solid fa-user"></i>
+              </div>
+              <div className="user-info">
+                <div className="user-name">Administrateur</div>
+                <div className="user-role">Gérant</div>
+              </div>
             </div>
-            <div className="user-info">
-              <div className="user-name">Administrateur</div>
-              <div className="user-role">Gérant</div>
-            </div>
+            <button className="logout-btn" onClick={handleLogout} title="Déconnexion">
+              <i className="fa-solid fa-power-off"></i>
+            </button>
           </div>
         </div>
       </aside>

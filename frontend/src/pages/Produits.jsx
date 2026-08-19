@@ -166,7 +166,7 @@ function Produits() {
               <div className="modal-body">
                 <div className="form-row">
                   <div className="form-group">
-                    <label className="form-label">Nom du produit *</label>
+                    <label className="form-label">Nom du produit</label>
                     <input className="form-control" required value={formData.nom} onChange={e => set('nom', e.target.value)} placeholder="Ex: Coque iPhone 14" />
                   </div>
                   <div className="form-group">
@@ -202,11 +202,11 @@ function Produits() {
                 </div>
                 <div className="form-row">
                   <div className="form-group">
-                    <label className="form-label">Prix d'achat (€) *</label>
+                    <label className="form-label">Prix d'achat (€)</label>
                     <input className="form-control" type="number" step="0.01" required value={formData.prix_achat} onChange={e => set('prix_achat', e.target.value)} placeholder="0.00" />
                   </div>
                   <div className="form-group">
-                    <label className="form-label">Prix de vente (€) *</label>
+                    <label className="form-label">Prix de vente (€)</label>
                     <input className="form-control" type="number" step="0.01" required value={formData.prix_vente} onChange={e => set('prix_vente', e.target.value)} placeholder="0.00" />
                   </div>
                 </div>
