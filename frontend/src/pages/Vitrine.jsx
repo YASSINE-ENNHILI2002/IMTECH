@@ -173,11 +173,7 @@ function Vitrine() {
       <nav className="vitrine-nav">
         <div className="vitrine-nav-container">
           <div className="vitrine-brand">
-            <Logo width={32} height={32} />
-            <div>
-              <span className="vitrine-brand-name">IMTECH</span>
-              <span className="vitrine-brand-sub">Showroom Digital</span>
-            </div>
+            <Logo width={140} height={46} />
           </div>
           <div className="vitrine-nav-actions">
             <a href="https://wa.me/212600000000" target="_blank" rel="noreferrer" className="nav-contact-btn">

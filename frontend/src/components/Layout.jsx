@@ -39,8 +39,7 @@ function Layout() {
           <i className={sidebarOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'}></i>
         </button>
         <div className="mobile-brand">
-          <Logo width={28} height={28} />
-          <span className="mobile-brand-name">IMTECH</span>
+          <Logo width={110} height={36} />
         </div>
         <button className="mobile-logout" onClick={handleLogout} title="Déconnexion">
           <i className="fa-solid fa-power-off"></i>
@@ -52,12 +51,8 @@ function Layout() {
 
       {/* ===== SIDEBAR ===== */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-        <div className="sidebar-brand">
-          <Logo width={36} height={36} />
-          <div>
-            <div className="brand-name">IMTECH</div>
-            <div className="brand-sub">Gestion Magasin</div>
-          </div>
+        <div className="sidebar-brand" style={{ justifyContent: 'center', padding: '20px 10px' }}>
+          <Logo width={160} height={52} />
         </div>
 
         <div className="sidebar-section-label">Menu principal</div>

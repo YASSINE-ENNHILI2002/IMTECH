@@ -11,7 +11,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(17, 23, 19, 0.85);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
@@ -78,7 +78,7 @@
 .hero-grid-decor {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px);
   background-size: 24px 24px;
   pointer-events: none;
 }
@@ -95,8 +95,8 @@
 }
 
 .hero-badge {
-  background: rgba(37, 99, 235, 0.15);
-  border: 1px solid rgba(37, 99, 235, 0.3);
+  background: rgba(16, 90, 129, 0.08);
+  border: 1px solid rgba(16, 90, 129, 0.2);
   color: var(--accent-purple-light);
   padding: 4px 12px;
   border-radius: 99px;
@@ -110,10 +110,9 @@
   font-size: 2.8rem;
   font-weight: 800;
   line-height: 1.15;
-  color: #fff;
-  background: linear-gradient(135deg, #fff 40%, #93c5fd 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--text-primary);
+  background: none;
+  -webkit-text-fill-color: initial;
 }
 
 .hero-subtitle {
@@ -131,7 +130,7 @@
 }
 
 .feat-chip {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(0, 0, 0, 0.03);
   border: 1px solid var(--border);
   padding: 6px 14px;
   border-radius: 99px;
@@ -306,7 +305,7 @@
 .product-image-carousel {
   height: 220px;
   position: relative;
-  background: #0d120f;
+  background: #f8fafc;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -317,7 +316,8 @@
 .product-carousel-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 10px;
   transition: transform 0.4s ease;
   cursor: pointer;
 }
@@ -334,15 +334,16 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(15, 17, 23, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 10;
   opacity: 0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   transition: var(--transition);
 }
 
@@ -529,7 +530,7 @@
 
 /* ===== FOOTER CONTACT BAR ===== */
 .vitrine-footer {
-  background: #090c0a;
+  background: #0f172a;
   border-top: 1px solid var(--border);
   padding: 60px 24px 20px;
   margin-top: 60px;
@@ -627,7 +628,7 @@
   margin: 0;
   font-size: 1.1rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .detail-modal-close {
@@ -640,7 +641,7 @@
 }
 
 .detail-modal-close:hover {
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .detail-modal-content {
@@ -661,7 +662,7 @@
   aspect-ratio: 4/3;
   border-radius: var(--radius);
   overflow: hidden;
-  background: #0d120f;
+  background: #f8fafc;
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -671,7 +672,8 @@
 .detail-main-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 10px;
 }
 
 .detail-thumbnails-strip {
@@ -687,7 +689,7 @@
   border-radius: var(--radius-sm);
   border: 1.5px solid var(--border);
   overflow: hidden;
-  background: #0d120f;
+  background: #f8fafc;
   cursor: pointer;
   flex-shrink: 0;
   padding: 0;
@@ -697,7 +699,8 @@
 .thumbnail-btn img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 4px;
 }
 
 .thumbnail-btn:hover {
@@ -736,7 +739,7 @@
 .specs-title {
   font-size: 1.6rem;
   font-weight: 800;
-  color: #fff;
+  color: var(--text-primary);
   line-height: 1.25;
 }
 
@@ -770,7 +773,7 @@
 }
 
 .specs-row strong {
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .specs-description h4 {
