@@ -595,28 +595,60 @@ export default function Vitrine() {
       {/* ─── LOCATION / MAPS ─── */}
       <section className="vt-section vt-location" id="contact">
         <div className="vt-section-inner">
+
+          {/* ─── SHOP PHOTOS GALLERY ─── */}
+          <div className="shop-gallery-row reveal">
+            <div className="shop-gallery-label">
+              <span className="section-tag">Notre Boutique</span>
+              <h2 className="section-title">Venez nous <span>rendre visite</span></h2>
+              <p className="section-subtitle">Un espace accueillant au cœur de Marrakech, avec des centaines de produits disponibles immédiatement.</p>
+              <a
+                href="https://share.google/k0hNVuOUe97JCCsVO"
+                target="_blank"
+                rel="noreferrer"
+                className="btn-directions"
+              >
+                <i className="fa-solid fa-diamond-turn-right" /> Voir sur Google Maps
+              </a>
+            </div>
+            <div className="shop-gallery-imgs">
+              <div className="shop-img-main">
+                <img src="/boutique1.webp" alt="Boutique I'm Tech Marrakech" loading="lazy" />
+                <div className="shop-img-badge">
+                  <i className="fa-solid fa-store" /> Notre Magasin
+                </div>
+              </div>
+              <div className="shop-img-secondary">
+                <img src="/boutique2.webp" alt="Intérieur boutique I'm Tech" loading="lazy" />
+                <div className="shop-img-overlay">
+                  <i className="fa-solid fa-map-pin" /> Marrakech, Maroc
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="location-grid">
             {/* MAP */}
             <div className="map-embed-wrap reveal">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3396.877!2d-7.989!3d31.629!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xdafee8d96179e51%3A0x5950b6534f87adb8!2sMarrakech%2C%20Morocco!5e0!3m2!1sen!2sma!4v1692000000000!5m2!1sen!2sma"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13583.8!2d-7.9811!3d31.6295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zaTptIHRlY2ggbWFycmFrZWNo!5e0!3m2!1sfr!2sma!4v1692000000000!5m2!1sfr!2sma&q=i%27m+tech+marrakech"
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="I'mtech Marrakech"
+                title="I'm Tech Marrakech - Localisation"
               />
             </div>
 
             {/* INFO */}
             <div className="location-info">
               <div className="location-info-header reveal">
-                <h2>Visitez notre <span style={{ color: '#105a81' }}>boutique</span></h2>
-                <p>Nous sommes au cœur de Marrakech pour vous accueillir, conseiller et vous proposer le meilleur en informatique.</p>
+                <h2>Trouvez-nous à <span style={{ color: '#105a81' }}>Marrakech</span></h2>
+                <p>Nous sommes au cœur de Marrakech pour vous accueillir, vous conseiller et vous proposer le meilleur en informatique.</p>
               </div>
 
               <div className="contact-cards">
                 {[
-                  { icon: 'fa-location-dot', color: '#105a81', bg: 'rgba(16,90,129,0.08)', label: 'Adresse', value: 'Marrakech, Maroc', href: 'https://maps.google.com/?q=Marrakech' },
+                  { icon: 'fa-location-dot', color: '#105a81', bg: 'rgba(16,90,129,0.08)', label: 'Adresse', value: 'Marrakech, Maroc', href: 'https://share.google/k0hNVuOUe97JCCsVO' },
                   { icon: 'fa-phone', color: '#73be43', bg: 'rgba(115,190,67,0.08)', label: 'Téléphone', value: '06 34 82 53 68', href: 'tel:+212634825368' },
                   { icon: 'fa-envelope', color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', label: 'Email', value: 'contact@imtech.ma', href: 'mailto:contact@imtech.ma' },
                 ].map((c, i) => (
@@ -637,7 +669,7 @@ export default function Vitrine() {
                 {HOURS.map((h, i) => (
                   <div key={i} className="hours-row">
                     <span className="hours-day">{h.day}</span>
-                    <span className="hours-time">{h.time}</span>
+                    <span className="hours-time" style={h.day === 'Dimanche' ? { color: '#ef4444', fontWeight: 600 } : {}}>{h.time}</span>
                   </div>
                 ))}
               </div>
