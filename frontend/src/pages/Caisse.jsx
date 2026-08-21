@@ -208,7 +208,7 @@ function Caisse() {
                 <div className="product-info">
                   <h4>{product.nom}</h4>
                   <p className="product-barcode">{product.code_barres || 'Sans code-barres'}</p>
-                  <p className="product-price">{parseFloat(product.prix_vente).toFixed(2)}€</p>
+                  <p className="product-price">{parseFloat(product.prix_vente).toFixed(2)} DH</p>
                   <p className="product-stock">Stock: {product.stock}</p>
                 </div>
                 {product.stock <= 0 && <div className="out-of-stock-badge">Rupture</div>}
@@ -246,7 +246,7 @@ function Caisse() {
                 <div key={item.id} className="cart-item">
                   <div className="item-info">
                     <h4>{item.nom}</h4>
-                    <p>{parseFloat(item.prix_vente).toFixed(2)}€</p>
+                    <p>{parseFloat(item.prix_vente).toFixed(2)} DH</p>
                   </div>
                   <div className="item-quantity">
                     <button 
@@ -264,7 +264,7 @@ function Caisse() {
                     </button>
                   </div>
                   <div className="item-total">
-                    {(parseFloat(item.prix_vente) * item.quantite).toFixed(2)}€
+                    {(parseFloat(item.prix_vente) * item.quantite).toFixed(2)} DH
                   </div>
                   <button 
                     className="remove-btn"
@@ -280,7 +280,7 @@ function Caisse() {
           <div className="cart-footer">
             <div className="cart-total">
               <span>Total:</span>
-              <span className="total-amount">{cartTotal.toFixed(2)}€</span>
+              <span className="total-amount">{cartTotal.toFixed(2)} DH</span>
             </div>
             <button 
               className="btn btn-success checkout-btn"
@@ -294,17 +294,17 @@ function Caisse() {
       </div>
 
       {showPaymentModal && (
-        <div className="modal">
-          <div className="modal-content payment-modal">
+        <div className="modal-overlay" onClick={() => setShowPaymentModal(false)}>
+          <div className="modal payment-modal" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
               <h3>Paiement</h3>
-              <button className="close-btn" onClick={() => setShowPaymentModal(false)}>×</button>
+              <button className="modal-close" onClick={() => setShowPaymentModal(false)}>×</button>
             </div>
             
             <div className="payment-summary">
               <div className="summary-row">
                 <span>Total à payer:</span>
-                <span className="total-amount">{cartTotal.toFixed(2)}€</span>
+                <span className="total-amount">{cartTotal.toFixed(2)} DH</span>
               </div>
             </div>
 

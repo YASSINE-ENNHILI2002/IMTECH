@@ -47,7 +47,7 @@ function Dashboard() {
     { icon: 'fa-solid fa-box-open', label: 'Produits en stock', value: stats.totalProducts, color: 'purple', link: '/produits' },
     { icon: 'fa-solid fa-triangle-exclamation', label: 'Stock faible', value: stats.lowStockProducts, color: 'orange', link: '/produits' },
     { icon: 'fa-solid fa-screwdriver-wrench', label: 'Réparations actives', value: stats.activeReparations, color: 'cyan', link: '/reparations' },
-    { icon: 'fa-solid fa-coins', label: `CA du jour (${stats.todayTransactions} ventes)`, value: `${stats.todayRevenue.toFixed(2)} €`, color: 'green', link: '/caisse' },
+    { icon: 'fa-solid fa-coins', label: `CA du jour (${stats.todayTransactions} ventes)`, value: `${stats.todayRevenue.toFixed(2)} DH`, color: 'green', link: '/caisse' },
   ]
 
   const statusMap = {

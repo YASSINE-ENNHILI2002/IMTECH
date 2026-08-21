@@ -441,7 +441,7 @@ function RachatOccasion() {
             <h3>Prix et Paiement</h3>
             <div className="form-grid">
               <div className="form-group">
-                <label>Prix de rachat (€)*</label>
+                <label>Prix de rachat (DH)*</label>
                 <input
                   type="number"
                   step="0.01"
@@ -477,7 +477,7 @@ function RachatOccasion() {
               <p><strong>Vendeur:</strong> {formData.prenom} {formData.nom}</p>
               <p><strong>Téléphone:</strong> {formData.marque} {formData.modele}</p>
               <p><strong>IMEI:</strong> {formData.imei1}</p>
-              <p><strong>Prix de rachat:</strong> {formData.prix_rachat}€</p>
+              <p><strong>Prix de rachat:</strong> {formData.prix_rachat} DH</p>
             </div>
             <div className="form-actions">
               <button className="btn btn-secondary" onClick={prevStep}>
@@ -536,7 +536,7 @@ function RachatOccasion() {
                 </div>
                 <div className="summary-item">
                   <span className="label">Prix:</span>
-                  <span className="value">{formData.prix_rachat}€</span>
+                  <span className="value">{formData.prix_rachat} DH</span>
                 </div>
                 <div className="summary-item">
                   <span className="label">Paiement:</span>
@@ -544,6 +544,7 @@ function RachatOccasion() {
                 </div>
               </div>
             </div>
+
 
             <div className="form-actions">
               <button className="btn btn-secondary" onClick={prevStep}>

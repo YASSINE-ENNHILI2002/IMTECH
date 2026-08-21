@@ -127,8 +127,8 @@ function Produits() {
                       </div>
                     </td>
                     <td><span className="badge badge-purple">{p.categorie_nom || '—'}</span></td>
-                    <td style={{color:'var(--text-secondary)'}}>{parseFloat(p.prix_achat).toFixed(2)} €</td>
-                    <td style={{fontWeight:600, color:'var(--accent-green)'}}>{parseFloat(p.prix_vente).toFixed(2)} €</td>
+                    <td style={{color:'var(--text-secondary)'}}>{parseFloat(p.prix_achat).toFixed(2)} DH</td>
+                    <td style={{fontWeight:600, color:'var(--accent-green)'}}>{parseFloat(p.prix_vente).toFixed(2)} DH</td>
                     <td>
                       <span style={{fontWeight:600, color: p.est_stock_faible ? 'var(--accent-red)' : 'var(--text-primary)'}}>
                         {p.stock}
@@ -202,11 +202,11 @@ function Produits() {
                 </div>
                 <div className="form-row">
                   <div className="form-group">
-                    <label className="form-label">Prix d'achat (€)</label>
+                    <label className="form-label">Prix d'achat (DH)</label>
                     <input className="form-control" type="number" step="0.01" required value={formData.prix_achat} onChange={e => set('prix_achat', e.target.value)} placeholder="0.00" />
                   </div>
                   <div className="form-group">
-                    <label className="form-label">Prix de vente (€)</label>
+                    <label className="form-label">Prix de vente (DH)</label>
                     <input className="form-control" type="number" step="0.01" required value={formData.prix_vente} onChange={e => set('prix_vente', e.target.value)} placeholder="0.00" />
                   </div>
                 </div>

@@ -72,25 +72,31 @@ function Clients() {
     }
   }
 
-  if (loading) return <div className="loading">Chargement...</div>
+  if (loading) return <div className="loading-state"><div className="spinner" /><span>Chargement des clients...</span></div>
 
   return (
     <div className="clients-page">
       <div className="page-header">
-        <h2>Gestion des Clients</h2>
+        <div>
+          <div className="page-title"><i className="fa-solid fa-users"></i> Gestion des Clients</div>
+          <div className="page-subtitle">{clients.length} client{clients.length !== 1 ? 's' : ''} inscrit{clients.length !== 1 ? 's' : ''}</div>
+        </div>
         <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-          + Nouveau Client
+          <i className="fa-solid fa-plus"></i> Nouveau Client
         </button>
       </div>
 
-      <div className="filters">
-        <input
-          type="text"
-          placeholder="Rechercher par nom, prénom, téléphone, numéro de pièce..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-input"
-        />
+      <div className="filter-bar">
+        <div className="search-wrapper" style={{ flex: 1, minWidth: 280 }}>
+          <i className="fa-solid fa-search"></i>
+          <input
+            type="text"
+            placeholder="Rechercher par nom, prénom, téléphone, numéro de pièce..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="form-control search-input"
+          />
+        </div>
       </div>
 
       <div className="clients-list">
@@ -105,10 +111,10 @@ function Clients() {
               <p><strong>Pièce d'identité:</strong> {client.numero_piece}</p>
               {client.email && <p><strong>Email:</strong> {client.email}</p>}
               {client.adresse && <p><strong>Adresse:</strong> {client.adresse}</p>}
-              <p><strong>Date création:</strong> {new Date(client.date_creation).toLocaleDateString('fr-FR')}</p>
+              <p><strong>Date création:</strong> {new Date(client.date_creation).toLocaleDateString('fr-MA')}</p>
             </div>
             <div className="client-actions">
-              <button className="btn btn-sm btn-info">Modifier</button>
+              <button className="btn btn-sm btn-secondary">Modifier</button>
               <button className="btn btn-sm btn-danger" onClick={() => handleDelete(client.id)}>
                 Supprimer
               </button>
@@ -118,88 +124,90 @@ function Clients() {
       </div>
 
       {showModal && (
-        <div className="modal">
-          <div className="modal-content">
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal" style={{ maxWidth: 580 }} onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>Nouveau Client</h3>
-              <button className="close-btn" onClick={() => setShowModal(false)}>×</button>
+              <h3><i className="fa-solid fa-user-plus"></i> Nouveau Client</h3>
+              <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
             </div>
             <form onSubmit={handleSubmit}>
-              <div className="form-grid">
-                <div className="form-group">
-                  <label>Nom</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.nom}
-                    onChange={(e) => setFormData({...formData, nom: e.target.value})}
+              <div className="modal-body">
+                <div className="form-grid">
+                  <div className="form-group">
+                    <label>Nom</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.nom}
+                      onChange={(e) => setFormData({...formData, nom: e.target.value})}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Prénom</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.prenom}
+                      onChange={(e) => setFormData({...formData, prenom: e.target.value})}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Téléphone</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.telephone}
+                      onChange={(e) => setFormData({...formData, telephone: e.target.value})}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Type de pièce</label>
+                    <select
+                      required
+                      value={formData.type_piece}
+                      onChange={(e) => setFormData({...formData, type_piece: e.target.value})}
+                    >
+                      <option value="CIN">Carte d'Identité Nationale</option>
+                      <option value="PASSEPORT">Passeport</option>
+                      <option value="CARTE_SEJOUR">Carte de séjour</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>Numéro de pièce</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.numero_piece}
+                      onChange={(e) => setFormData({...formData, numero_piece: e.target.value})}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Email</label>
+                    <input
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    />
+                  </div>
+                </div>
+                <div className="form-group" style={{ marginTop: 14 }}>
+                  <label>Adresse</label>
+                  <textarea
+                    value={formData.adresse}
+                    onChange={(e) => setFormData({...formData, adresse: e.target.value})}
+                    rows="2"
                   />
                 </div>
                 <div className="form-group">
-                  <label>Prénom</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.prenom}
-                    onChange={(e) => setFormData({...formData, prenom: e.target.value})}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Téléphone</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.telephone}
-                    onChange={(e) => setFormData({...formData, telephone: e.target.value})}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Type de pièce</label>
-                  <select
-                    required
-                    value={formData.type_piece}
-                    onChange={(e) => setFormData({...formData, type_piece: e.target.value})}
-                  >
-                    <option value="CIN">Carte d'Identité Nationale</option>
-                    <option value="PASSEPORT">Passeport</option>
-                    <option value="CARTE_SEJOUR">Carte de séjour</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>Numéro de pièce</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.numero_piece}
-                    onChange={(e) => setFormData({...formData, numero_piece: e.target.value})}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Email</label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  <label>Notes</label>
+                  <textarea
+                    value={formData.notes}
+                    onChange={(e) => setFormData({...formData, notes: e.target.value})}
+                    rows="2"
                   />
                 </div>
               </div>
-              <div className="form-group">
-                <label>Adresse</label>
-                <textarea
-                  value={formData.adresse}
-                  onChange={(e) => setFormData({...formData, adresse: e.target.value})}
-                  rows="2"
-                />
-              </div>
-              <div className="form-group">
-                <label>Notes</label>
-                <textarea
-                  value={formData.notes}
-                  onChange={(e) => setFormData({...formData, notes: e.target.value})}
-                  rows="2"
-                />
-              </div>
-              <div className="modal-actions">
+              <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
                   Annuler
                 </button>
