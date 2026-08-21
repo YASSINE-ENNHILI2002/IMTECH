@@ -111,9 +111,8 @@ const TESTIMONIALS = [
 
 /* ─── HOURS ─── */
 const HOURS = [
-  { day: 'Lundi – Vendredi', time: '09h00 – 20h00' },
-  { day: 'Samedi', time: '09h00 – 22h00' },
-  { day: 'Dimanche', time: '10h00 – 18h00' },
+  { day: 'Lundi – Samedi', time: '09h00 – 14h00 et 17h00 – 22h00' },
+  { day: 'Dimanche', time: 'Fermé (Repos)' },
 ]
 
 /* ═══════════════════════════════════════════════════════════════════
