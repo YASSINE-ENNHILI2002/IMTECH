@@ -29,7 +29,7 @@ const IMGS = {
   ],
 }
 
-const WHATSAPP_PHONE = '212600000000'
+const WHATSAPP_PHONE = '212634825368'
 
 function getImages(product) {
   const s = (product.nom + ' ' + (product.categorie_nom || '')).toLowerCase()
@@ -618,7 +618,7 @@ export default function Vitrine() {
               <div className="contact-cards">
                 {[
                   { icon: 'fa-location-dot', color: '#105a81', bg: 'rgba(16,90,129,0.08)', label: 'Adresse', value: 'Marrakech, Maroc', href: 'https://maps.google.com/?q=Marrakech' },
-                  { icon: 'fa-phone', color: '#73be43', bg: 'rgba(115,190,67,0.08)', label: 'Téléphone', value: '+212 6 00 00 00 00', href: 'tel:+212600000000' },
+                  { icon: 'fa-phone', color: '#73be43', bg: 'rgba(115,190,67,0.08)', label: 'Téléphone', value: '06 34 82 53 68', href: 'tel:+212634825368' },
                   { icon: 'fa-envelope', color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', label: 'Email', value: 'contact@imtech.ma', href: 'mailto:contact@imtech.ma' },
                 ].map((c, i) => (
                   <a key={i} className={`contact-card reveal reveal-delay-${i + 1}`} href={c.href} target="_blank" rel="noreferrer">
@@ -694,8 +694,8 @@ export default function Vitrine() {
               <a href={`https://wa.me/${WHATSAPP_PHONE}`} target="_blank" rel="noreferrer">
                 <i className="fa-brands fa-whatsapp" /> WhatsApp
               </a>
-              <a href="tel:+212600000000">
-                <i className="fa-solid fa-phone" /> +212 6 00 00 00 00
+              <a href="tel:+212634825368">
+                <i className="fa-solid fa-phone" /> 06 34 82 53 68
               </a>
               <a href="mailto:contact@imtech.ma">
                 <i className="fa-solid fa-envelope" /> contact@imtech.ma
